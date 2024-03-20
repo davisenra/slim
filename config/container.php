@@ -34,9 +34,9 @@ return [
     LoggerInterface::class => function (Container $container) {
         return new Logger(
             name: 'app',
-            handlers: [new RotatingFileHandler(
-                sprintf('%s/app.log', __DIR__ . '/../var/')
-            )],
+            handlers: [
+                new RotatingFileHandler(sprintf('%s/app.log', __DIR__ . '/../var/'))
+            ],
             processors: [],
         );
     },
