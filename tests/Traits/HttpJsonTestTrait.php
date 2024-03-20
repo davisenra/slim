@@ -86,6 +86,6 @@ trait HttpJsonTestTrait
      */
     protected function assertJsonValue($expected, string $path, ResponseInterface $response)
     {
-        $this->assertSame($expected, $this->getArrayValue($this->getJsonData($response), $path));
+        $this->assertSame($expected, $this->getJsonData($response), $path);
     }
 }

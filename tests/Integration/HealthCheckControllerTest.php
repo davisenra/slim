@@ -13,7 +13,7 @@ class HealthCheckControllerTest extends TestCase
     #[Test]
     public function itReturnsASuccessfulResponse(): void
     {
-        $request = $this->createRequest('GET', '/healthcheck');
+        $request = $this->createJsonRequest('GET', '/healthcheck');
         $response = $this->app->handle($request);
 
         $this->assertSame(200, $response->getStatusCode());
