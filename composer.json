@@ -15,11 +15,12 @@
     "slim/slim": "^4.13",
     "nyholm/psr7-server": "^1.1",
     "nyholm/psr7": "^1.8",
-    "php-di/php-di": "^7.0",
-    "php-di/slim-bridge": "^3.4"
+    "monolog/monolog": "^3.5",
+    "php-di/php-di": "^7.0"
   },
   "require-dev": {
     "symfony/var-dumper": "^7.0",
-    "phpunit/phpunit": "^11.0"
+    "phpunit/phpunit": "^11.0",
+    "laravel/pint": "^1.14"
   }
 }

@@ -2,19 +2,11 @@
 
 declare(strict_types=1);
 
-use App\Controller\HealthCheckController;
-use DI\Bridge\Slim\Bridge;
-use DI\Container;
+use DI\ContainerBuilder;
+use Slim\App;
 
-$container = new Container();
-$app = Bridge::create($container);
+$container = (new ContainerBuilder())
+    ->addDefinitions(require_once __DIR__ . '/../config/container.php')
+    ->build();
 
-$app->addErrorMiddleware(
-    displayErrorDetails: true,
-    logErrors: true,
-    logErrorDetails: true,
-);
-
-$app->get('/healthcheck', HealthCheckController::class);
-
-return $app;
+return $container->get(App::class);
