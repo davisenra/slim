@@ -1,5 +1,6 @@
 # PHP
 /vendor
+/var/*
 
 # PHPUnit
 .phpunit.result.cache
