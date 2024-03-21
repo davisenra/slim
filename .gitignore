@@ -1,6 +1,7 @@
-# PHP
+# Application
 /vendor
 /var/*
+.env
 
 # PHPUnit
 .phpunit.result.cache
