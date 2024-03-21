@@ -21,13 +21,11 @@ trait ContainerTestTrait
      *
      * TestCases must call this method inside setUp().
      *
-     * @param ContainerInterface|null $container The container
+     * @param  ContainerInterface|null  $container  The container
      *
      * @throws UnexpectedValueException
-     *
-     * @return void
      */
-    protected function setUpContainer(ContainerInterface $container = null): void
+    protected function setUpContainer(?ContainerInterface $container = null): void
     {
         if ($container instanceof ContainerInterface) {
             $this->container = $container;
@@ -41,12 +39,10 @@ trait ContainerTestTrait
     /**
      * Define an object or a value in the container.
      *
-     * @param string $name The entry name
-     * @param mixed $value The value
+     * @param  string  $name  The entry name
+     * @param  mixed  $value  The value
      *
      * @throws BadMethodCallException
-     *
-     * @return void
      */
     protected function setContainerValue(string $name, $value): void
     {

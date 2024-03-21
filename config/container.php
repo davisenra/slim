@@ -2,14 +2,18 @@
 
 declare(strict_types=1);
 
-use Slim\App;
 use DI\Container;
+use Doctrine\DBAL\DriverManager;
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\ORMSetup;
 use Monolog\Handler\RotatingFileHandler;
 use Monolog\Logger;
 use Nyholm\Psr7\Factory\Psr17Factory;
-use Slim\Factory\AppFactory;
 use Psr\Http\Message\ServerRequestFactoryInterface;
 use Psr\Log\LoggerInterface;
+use Slim\App;
+use Slim\Factory\AppFactory;
 
 return [
 
@@ -22,7 +26,7 @@ return [
             logErrorDetails: true,
         );
 
-        (require __DIR__ . '/routes.php')($app);
+        (require __DIR__.'/routes.php')($app);
 
         return $app;
     },
@@ -35,10 +39,29 @@ return [
         return new Logger(
             name: 'app',
             handlers: [
-                new RotatingFileHandler(sprintf('%s/app.log', __DIR__ . '/../var/'))
+                new RotatingFileHandler(sprintf('%s/app.log', __DIR__.'/../var/')),
             ],
             processors: [],
         );
+    },
+
+    EntityManagerInterface::class => function (Container $container) {
+        $config = ORMSetup::createAttributeMetadataConfiguration(
+            paths: [__DIR__.'/../src/Entity'],
+            isDevMode: true,
+        );
+
+        $connection = DriverManager::getConnection(
+            params: [
+                'driver' => 'pdo_sqlite',
+                'dbname' => __DIR__ . '/../var/database.sqlite',
+                // 'user' => 'root',
+                // 'password' => '',
+            ],
+            config: $config,
+        );
+
+        return new EntityManager($connection, $config);
     },
 
 ];

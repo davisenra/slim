@@ -12,6 +12,10 @@
         <testsuite name="integration">
             <directory>tests/Integration</directory>
         </testsuite>
+
+        <testsuite name="infrastructure">
+            <directory>tests/Infrastructure</directory>
+        </testsuite>
     </testsuites>
 
     <source>

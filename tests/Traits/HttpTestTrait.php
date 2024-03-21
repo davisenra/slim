@@ -18,17 +18,16 @@ trait HttpTestTrait
     /**
      * Create a server request.
      *
-     * @param string $method The HTTP method
-     * @param string|UriInterface $uri The URI
-     * @param array $serverParams The server parameters
+     * @param  string  $method  The HTTP method
+     * @param  string|UriInterface  $uri  The URI
+     * @param  array  $serverParams  The server parameters
+     * @return ServerRequestInterface The request
      *
      * @throws RuntimeException
-     *
-     * @return ServerRequestInterface The request
      */
     protected function createRequest(string $method, $uri, array $serverParams = []): ServerRequestInterface
     {
-        if (!$this->container instanceof ContainerInterface) {
+        if (! $this->container instanceof ContainerInterface) {
             throw new RuntimeException('DI container not found');
         }
 
@@ -40,13 +39,12 @@ trait HttpTestTrait
     /**
      * Create a form request.
      *
-     * @param string $method The HTTP method
-     * @param string|UriInterface $uri The URI
-     * @param array|null $data The form data
-     *
+     * @param  string  $method  The HTTP method
+     * @param  string|UriInterface  $uri  The URI
+     * @param  array|null  $data  The form data
      * @return ServerRequestInterface The request
      */
-    protected function createFormRequest(string $method, $uri, array $data = null): ServerRequestInterface
+    protected function createFormRequest(string $method, $uri, ?array $data = null): ServerRequestInterface
     {
         $request = $this->createRequest($method, $uri);
 
@@ -60,16 +58,15 @@ trait HttpTestTrait
     /**
      * Create a new response.
      *
-     * @param int $code HTTP status code; defaults to 200
-     * @param string $reasonPhrase Reason phrase to associate with status code
+     * @param  int  $code  HTTP status code; defaults to 200
+     * @param  string  $reasonPhrase  Reason phrase to associate with status code
+     * @return ResponseInterface The response
      *
      * @throws RuntimeException
-     *
-     * @return ResponseInterface The response
      */
     protected function createResponse(int $code = 200, string $reasonPhrase = ''): ResponseInterface
     {
-        if (!$this->container instanceof ContainerInterface) {
+        if (! $this->container instanceof ContainerInterface) {
             throw new RuntimeException('DI container not found');
         }
 
@@ -81,14 +78,12 @@ trait HttpTestTrait
     /**
      * Assert that the response body contains a string.
      *
-     * @param ResponseInterface $response The response
-     * @param string $needle The expected string
-     *
-     * @return void
+     * @param  ResponseInterface  $response  The response
+     * @param  string  $needle  The expected string
      */
     protected function assertResponseContains(ResponseInterface $response, string $needle): void
     {
-        $body = (string)$response->getBody();
+        $body = (string) $response->getBody();
 
         $this->assertStringContainsString($needle, $body);
     }
