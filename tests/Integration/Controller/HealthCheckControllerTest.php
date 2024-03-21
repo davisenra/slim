@@ -15,7 +15,9 @@ class HealthCheckControllerTest extends TestCase
     {
         $request = $this->createJsonRequest('GET', '/healthcheck');
         $response = $this->app->handle($request);
+        $responseData = $this->getJsonData($response);
 
         $this->assertSame(200, $response->getStatusCode());
+        $this->assertTrue($responseData['status']);
     }
 }
