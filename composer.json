@@ -13,7 +13,7 @@
   },
   "scripts": {
     "format": "php vendor/bin/pint --preset psr12",
-    "analyse": "php vendor/bin/phpstan analyse",
+    "analyse": "php vendor/bin/phpstan analyse --memory-limit=2G",
     "test": "php vendor/bin/phpunit"
   },
   "require": {
@@ -23,7 +23,8 @@
     "monolog/monolog": "^3.5",
     "php-di/php-di": "^7.0",
     "doctrine/orm": "^3.1",
-    "symfony/cache": "^7.0"
+    "symfony/cache": "^7.0",
+    "symfony/dotenv": "^7.0"
   },
   "require-dev": {
     "symfony/var-dumper": "^7.0",

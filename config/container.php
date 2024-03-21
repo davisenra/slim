@@ -2,22 +2,26 @@
 
 declare(strict_types=1);
 
-use DI\Container;
-use Doctrine\DBAL\DriverManager;
-use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\ORMSetup;
-use Monolog\Handler\RotatingFileHandler;
-use Monolog\Logger;
-use Nyholm\Psr7\Factory\Psr17Factory;
-use Psr\Http\Message\ServerRequestFactoryInterface;
-use Psr\Log\LoggerInterface;
 use Slim\App;
+use DI\Container;
+use Monolog\Logger;
+use Doctrine\ORM\ORMSetup;
+use Psr\Log\LoggerInterface;
 use Slim\Factory\AppFactory;
+use Doctrine\ORM\EntityManager;
+use Doctrine\DBAL\DriverManager;
+use Symfony\Component\Dotenv\Dotenv;
+use Nyholm\Psr7\Factory\Psr17Factory;
+use Doctrine\ORM\EntityManagerInterface;
+use Monolog\Handler\RotatingFileHandler;
+use Psr\Http\Message\ServerRequestFactoryInterface;
 
 return [
 
     App::class => function (Container $container): App {
+        $dotenv = new Dotenv();
+        $dotenv->load(__DIR__.'/../.env');
+
         $app = AppFactory::createFromContainer($container);
 
         $app->addErrorMiddleware(
@@ -53,10 +57,10 @@ return [
 
         $connection = DriverManager::getConnection(
             params: [
-                'driver' => 'pdo_sqlite',
-                'dbname' => __DIR__ . '/../var/database.sqlite',
-                'user' => 'root',
-                'password' => '',
+                'driver' => $_ENV['DB_DRIVER'],
+                'dbname' => sprintf('%s/../var/%s', __DIR__, $_ENV['DB_NAME']),
+                'user' => $_ENV['DB_USER'],
+                'password' => $_ENV['DB_PASSWORD'],
             ],
             config: $config,
         );

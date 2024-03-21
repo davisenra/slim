@@ -15,8 +15,11 @@ class DoctrineTest extends TestCase
     #[Test]
     public function itCanGetAnEntityManagerInstance(): void
     {
+        /** @var EntityManager $entityManager */
         $entityManager = $this->container->get(EntityManagerInterface::class);
+        $entityManager->getConnection()->beginTransaction(); // start the connection
 
         $this->assertInstanceOf(EntityManager::class, $entityManager);
+        $this->assertTrue($entityManager->getConnection()->isConnected());
     }
 }

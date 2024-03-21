@@ -2,8 +2,8 @@
 
 declare(strict_types=1);
 
-use DI\ContainerBuilder;
 use Slim\App;
+use DI\ContainerBuilder;
 
 require __DIR__.'/../vendor/autoload.php';
 

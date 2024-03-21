@@ -2,8 +2,8 @@
 
 namespace Tests\Traits;
 
-use DI\ContainerBuilder;
 use Slim\App;
+use DI\ContainerBuilder;
 
 trait AppTestTrait
 {
