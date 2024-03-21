@@ -55,8 +55,8 @@ return [
             params: [
                 'driver' => 'pdo_sqlite',
                 'dbname' => __DIR__ . '/../var/database.sqlite',
-                // 'user' => 'root',
-                // 'password' => '',
+                'user' => 'root',
+                'password' => '',
             ],
             config: $config,
         );
