@@ -1,10 +1,17 @@
 version: "3.9"
+
 services:
-  frankenphp:
-    image: dunglas/frankenphp
+  php:
+    build: "."
     ports:
       - "443:443/udp"
       - "443:443"
       - "80:80"
     volumes:
-      - "$PWD:/app"
+      - "./:/app"
+      - "./docker/caddy/caddy_data:/data"
+      - "./docker/caddy/caddy_config:/config"
+
+volumes:
+  caddy_data:
+  caddy_config:

@@ -22,7 +22,7 @@ class User
 {
     #[Id]
     #[Column(name: 'id', type: 'integer')]
-    #[GeneratedValue()]
+    #[GeneratedValue]
     private int $id;
 
     #[Column(name: 'name', type: 'string', length: 255)]

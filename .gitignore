@@ -1,10 +1,12 @@
 # Application
 /vendor
 /var/*
+/docker/caddy/*
 .env
 
-# PHPUnit
+# Cached files
+.php-cs-fixer.cache
 .phpunit.result.cache
 
-# PHP-CS-Fixer
-.php-cs-fixer.cache
+# Others
+.idea
