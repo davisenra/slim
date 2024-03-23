@@ -29,5 +29,8 @@ jobs:
       - name: Install dependencies
         run: composer install --prefer-dist --no-progress
 
+      - name: Prepare the application
+        run: php -r "file_exists('.env') || copy('.env.example', '.env');"
+
       - name: Run test suite
         run: vendor/bin/phpunit
