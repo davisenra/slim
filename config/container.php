@@ -22,19 +22,22 @@ return [
     App::class => function (Container $container): App {
         $dotenv = new Dotenv();
         $dotenv->load(__DIR__ . '/../.env');
+        $isDevEnvironment = $_ENV['APP_ENV'] === 'development';
 
         $app = AppFactory::createFromContainer($container);
 
-        $routeCollector = $app->getRouteCollector();
-        $routeCollector->setCacheFile(__DIR__ . '/../var/routes.cache');
+        if (!$isDevEnvironment) {
+            $routeCollector = $app->getRouteCollector();
+            $routeCollector->setCacheFile(__DIR__ . '/../var/routes.cache');
+        }
 
-        $displayErrors = $_ENV['APP_ENV'] === 'development';
         $app->addErrorMiddleware(
-            displayErrorDetails: $displayErrors,
+            displayErrorDetails: $isDevEnvironment === true,
             logErrors: true,
             logErrorDetails: true,
             logger: $container->get(LoggerInterface::class)
         );
+
         $app->add(CorsMiddleware::class);
         $app->addRoutingMiddleware();
 
