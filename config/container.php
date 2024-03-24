@@ -23,6 +23,7 @@ use Psr\Http\Message\ServerRequestFactoryInterface;
 use Psr\Log\LoggerInterface;
 use Slim\App;
 use Slim\Factory\AppFactory;
+use Slim\Handlers\ErrorHandler;
 use Symfony\Component\Console\Application;
 
 return [
@@ -60,6 +61,7 @@ return [
             logger: $container->get(LoggerInterface::class)
         );
 
+        /** @var ErrorHandler $errorHandler */
         $errorHandler = $errorMiddleware->getDefaultErrorHandler();
         $errorHandler->forceContentType('application/json');
 

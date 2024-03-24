@@ -13,6 +13,6 @@ class HealthCheckController
         return new Response(200, [], json_encode([
             'status' => true,
             'now' => (new \DateTime('now'))->format('Y-m-d H:i:s'),
-        ]));
+        ], flags: JSON_THROW_ON_ERROR));
     }
 }

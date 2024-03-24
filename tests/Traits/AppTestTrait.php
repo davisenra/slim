@@ -34,10 +34,5 @@ trait AppTestTrait
         $this->app = $container->get(App::class);
 
         $this->setUpContainer($container);
-
-        /** @phpstan-ignore-next-line */
-        if (method_exists($this, 'setUpDatabase')) {
-            $this->setUpDatabase(__DIR__ . '/../../resources/schema/schema.sql');
-        }
     }
 }

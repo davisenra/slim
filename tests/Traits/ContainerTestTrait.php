@@ -21,7 +21,7 @@ trait ContainerTestTrait
      *
      * TestCases must call this method inside setUp().
      *
-     * @param  ContainerInterface|null  $container  The container
+     * @param ContainerInterface|null $container The container
      *
      * @throws UnexpectedValueException
      */
@@ -39,12 +39,12 @@ trait ContainerTestTrait
     /**
      * Define an object or a value in the container.
      *
-     * @param  string  $name  The entry name
-     * @param  mixed  $value  The value
+     * @param string $name The entry name
+     * @param mixed $value The value
      *
      * @throws BadMethodCallException
      */
-    protected function setContainerValue(string $name, $value): void
+    protected function setContainerValue(string $name, mixed $value): void
     {
         if (method_exists($this->container, 'set')) {
             $this->container->set($name, $value);
