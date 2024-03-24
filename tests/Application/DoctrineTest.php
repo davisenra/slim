@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Infrastructure;
+namespace Tests\Application;
 
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;

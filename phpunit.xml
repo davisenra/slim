@@ -13,8 +13,8 @@
             <directory>tests/Integration</directory>
         </testsuite>
 
-        <testsuite name="infrastructure">
-            <directory>tests/Infrastructure</directory>
+        <testsuite name="application">
+            <directory>tests/Application</directory>
         </testsuite>
     </testsuites>
 
