@@ -2,35 +2,43 @@
 
 declare(strict_types=1);
 
-use Slim\App;
+use App\Middleware\CorsMiddleware;
 use DI\Container;
-use Monolog\Logger;
-use Doctrine\ORM\ORMSetup;
-use Psr\Log\LoggerInterface;
-use Slim\Factory\AppFactory;
-use Doctrine\ORM\EntityManager;
 use Doctrine\DBAL\DriverManager;
-use Symfony\Component\Dotenv\Dotenv;
-use Nyholm\Psr7\Factory\Psr17Factory;
+use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\ORMSetup;
 use Monolog\Handler\RotatingFileHandler;
+use Monolog\Logger;
+use Nyholm\Psr7\Factory\Psr17Factory;
 use Psr\Http\Message\ServerRequestFactoryInterface;
+use Psr\Log\LoggerInterface;
+use Slim\App;
+use Slim\Factory\AppFactory;
+use Symfony\Component\Dotenv\Dotenv;
 
 return [
 
     App::class => function (Container $container): App {
         $dotenv = new Dotenv();
-        $dotenv->load(__DIR__.'/../.env');
+        $dotenv->load(__DIR__ . '/../.env');
 
         $app = AppFactory::createFromContainer($container);
 
+        $routeCollector = $app->getRouteCollector();
+        $routeCollector->setCacheFile(__DIR__ . '/../var/routes.cache');
+
+        $displayErrors = $_ENV['APP_ENV'] === 'development';
         $app->addErrorMiddleware(
-            displayErrorDetails: true,
+            displayErrorDetails: $displayErrors,
             logErrors: true,
             logErrorDetails: true,
+            logger: $container->get(LoggerInterface::class)
         );
+        $app->add(CorsMiddleware::class);
+        $app->addRoutingMiddleware();
 
-        (require __DIR__.'/routes.php')($app);
+        (require __DIR__ . '/routes.php')($app);
 
         return $app;
     },
@@ -39,19 +47,19 @@ return [
         return $container->get(Psr17Factory::class);
     },
 
-    LoggerInterface::class => function (Container $container) {
+    LoggerInterface::class => function () {
         return new Logger(
             name: 'app',
             handlers: [
-                new RotatingFileHandler(sprintf('%s/app.log', __DIR__.'/../var/')),
+                new RotatingFileHandler(sprintf('%s/app.log', __DIR__ . '/../var/')),
             ],
             processors: [],
         );
     },
 
-    EntityManagerInterface::class => function (Container $container) {
+    EntityManagerInterface::class => function () {
         $config = ORMSetup::createAttributeMetadataConfiguration(
-            paths: [__DIR__.'/../src/Entity'],
+            paths: [__DIR__ . '/../src/Entity'],
             isDevMode: true,
         );
 
