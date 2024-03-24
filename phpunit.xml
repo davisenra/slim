@@ -20,7 +20,12 @@
 
     <source>
         <include>
-            <directory>app</directory>
+            <directory>src</directory>
         </include>
     </source>
+
+    <extensions>
+        <bootstrap class="RobinIngelbrecht\PHPUnitPrettyPrint\PhpUnitExtension">
+        </bootstrap>
+    </extensions>
 </phpunit>

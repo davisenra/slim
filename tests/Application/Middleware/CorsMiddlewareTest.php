@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Application\Middleware;
 
 use PHPUnit\Framework\Attributes\Test;

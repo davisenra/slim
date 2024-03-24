@@ -8,7 +8,10 @@ use Doctrine\DBAL\DriverManager;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\ORMSetup;
+use Monolog\Handler\HandlerInterface;
 use Monolog\Handler\RotatingFileHandler;
+use Monolog\Handler\StreamHandler;
+use Monolog\Level;
 use Monolog\Logger;
 use Nyholm\Psr7\Factory\Psr17Factory;
 use Psr\Http\Message\ServerRequestFactoryInterface;
@@ -51,11 +54,17 @@ return [
     },
 
     LoggerInterface::class => function () {
+        /** @var HandlerInterface[] $handlers */
+        $handlers = [];
+        $handlers[] = new StreamHandler('php://stdout', Level::Debug);
+
+        if ($_ENV['APP_ENV'] === 'development') {
+            $handlers[] = new RotatingFileHandler(sprintf('%s/app.log', __DIR__ . '/../var/'));
+        }
+
         return new Logger(
             name: 'app',
-            handlers: [
-                new RotatingFileHandler(sprintf('%s/app.log', __DIR__ . '/../var/')),
-            ],
+            handlers: $handlers,
             processors: [],
         );
     },
@@ -63,7 +72,7 @@ return [
     EntityManagerInterface::class => function () {
         $config = ORMSetup::createAttributeMetadataConfiguration(
             paths: [__DIR__ . '/../src/Entity'],
-            isDevMode: true,
+            isDevMode: $_ENV['APP_ENV'] === 'development',
         );
 
         $connection = DriverManager::getConnection(
