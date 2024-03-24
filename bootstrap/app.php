@@ -2,13 +2,14 @@
 
 declare(strict_types=1);
 
-use Slim\App;
 use DI\ContainerBuilder;
+use Symfony\Component\Dotenv\Dotenv;
 
-require __DIR__.'/../vendor/autoload.php';
+require __DIR__ . '/../vendor/autoload.php';
 
-$container = (new ContainerBuilder())
-    ->addDefinitions(require_once __DIR__.'/../config/container.php')
+$dotenv = new Dotenv();
+$dotenv->load(__DIR__ . '/../.env');
+
+return (new ContainerBuilder())
+    ->addDefinitions(require_once __DIR__ . '/../config/container.php')
     ->build();
-
-return $container->get(App::class);
