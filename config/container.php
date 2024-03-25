@@ -25,6 +25,7 @@ use Slim\App;
 use Slim\Factory\AppFactory;
 use Slim\Handlers\ErrorHandler;
 use Symfony\Component\Console\Application;
+use Symfony\Component\Console\Attribute\AsCommand;
 
 return [
 
@@ -102,6 +103,24 @@ return [
             new Doctrine\Migrations\Tools\Console\Command\VersionCommand($dependencyFactory),
             new Doctrine\Migrations\Tools\Console\Command\DiffCommand($dependencyFactory)
         ));
+
+        $commandsDir = __DIR__ . '/../src/Command';
+        $namespacePrefix = 'App\\Command\\';
+
+        $iterator = new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($commandsDir));
+        $classes = new \RegexIterator($iterator, '/^.+\.php$/i', \RecursiveRegexIterator::GET_MATCH);
+
+        foreach ($classes as $class) {
+            $classPath = $class[0];
+            $className = $namespacePrefix . str_replace(['/', '.php'], ['\\', ''], substr($classPath, strlen($commandsDir) + 1));
+
+            $reflectionClass = new \ReflectionClass($className);
+            $isCommand = $reflectionClass->getAttributes(AsCommand::class) !== [];
+
+            if ($isCommand) {
+                $cli->add($container->get($className));
+            }
+        }
 
         return $cli;
     },

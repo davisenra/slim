@@ -13,9 +13,4 @@ $container = require __DIR__ . '/bootstrap/app.php';
 
 /** @var Application $cli */
 $cli = $container->get(Application::class);
-
-$cli->addCommands([
-    // add commands here
-]);
-
 $cli->run();
