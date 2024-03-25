@@ -10,6 +10,11 @@ require __DIR__ . '/../vendor/autoload.php';
 $dotenv = new Dotenv();
 $dotenv->load(__DIR__ . '/../.env');
 
-return (new ContainerBuilder())
-    ->addDefinitions(require_once __DIR__ . '/../config/container.php')
-    ->build();
+$containerBuilder = new ContainerBuilder();
+$containerBuilder->addDefinitions(require __DIR__ . '/../config/container.php');
+
+if ($_ENV['APP_ENV'] !== 'development') {
+    $containerBuilder->enableCompilation(__DIR__ . '/../var/');
+}
+
+return $containerBuilder->build();
