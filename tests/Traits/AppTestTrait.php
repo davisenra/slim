@@ -2,17 +2,18 @@
 
 namespace Tests\Traits;
 
-use DI\ContainerBuilder;
 use Slim\App;
-use Symfony\Component\Dotenv\Dotenv;
+use Symfony\Component\Console\Application;
 
 trait AppTestTrait
 {
     use ContainerTestTrait;
     use HttpJsonTestTrait;
     use HttpTestTrait;
+    use CommandTestTrait;
 
     protected App $app;
+    protected Application $cliApp;
 
     /**
      * Before each test.
@@ -24,15 +25,10 @@ trait AppTestTrait
 
     protected function setUpApp(): void
     {
-        $dotenv = new Dotenv();
-        $dotenv->load(__DIR__ . '/../../.env');
-
-        $container = (new ContainerBuilder())
-            ->addDefinitions(require __DIR__ . '/../../config/container.php')
-            ->build();
+        $container = require __DIR__ . '/../../bootstrap/app.php';
 
         $this->app = $container->get(App::class);
-
+        $this->cliApp = $container->get(Application::class);
         $this->setUpContainer($container);
     }
 }
