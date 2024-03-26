@@ -1,5 +1,3 @@
-version: "3.9"
-
 services:
   php:
     build: "."
@@ -9,8 +7,8 @@ services:
       - "80:80"
     volumes:
       - "$PWD/:/app"
-      - "./docker/caddy/caddy_data:/data"
-      - "./docker/caddy/caddy_config:/config"
+      - "caddy_data:/data"
+      - "caddy_config:/config"
 
 volumes:
   caddy_data:
