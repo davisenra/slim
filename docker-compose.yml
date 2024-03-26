@@ -9,6 +9,9 @@ services:
       - "$PWD/:/app"
       - "caddy_data:/data"
       - "caddy_config:/config"
+    environment:
+      - FRANKENPHP_CONFIG=worker ./public/index.php
+      - MAX_REQUESTS=1000 # needs finetuning
 
 volumes:
   caddy_data:

@@ -1,5 +1,21 @@
 # Slim
 
+## Benchmarks (FrankenPHP @ Worker mode)
+
+- Static JSON endpoint
+
+```bash
+$ wrk -t12 -c100 -d30s https://localhost/healthcheck
+Running 30s test @ https://localhost/healthcheck
+  12 threads and 100 connections
+  Thread Stats   Avg      Stdev     Max   +/- Stdev
+    Latency     9.10ms   12.01ms 152.82ms   89.12%
+    Req/Sec     1.34k   194.29     3.57k    73.66%
+  479157 requests in 30.07s, 220.25MB read
+Requests/sec:  15933.59
+Transfer/sec:      7.32MB
+```
+
 ## Documentation
 
 **Instructions:**
