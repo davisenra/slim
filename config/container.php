@@ -13,13 +13,20 @@ use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\ORMSetup;
 use Doctrine\ORM\Tools\Console\ConsoleRunner;
 use Doctrine\ORM\Tools\Console\EntityManagerProvider\SingleManagerProvider;
+use League\Flysystem\Filesystem;
+use League\Flysystem\FilesystemAdapter;
+use League\Flysystem\Local\LocalFilesystemAdapter;
 use Monolog\Handler\HandlerInterface;
 use Monolog\Handler\RotatingFileHandler;
 use Monolog\Handler\StreamHandler;
 use Monolog\Level;
 use Monolog\Logger;
 use Nyholm\Psr7\Factory\Psr17Factory;
+use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\ServerRequestFactoryInterface;
+use Psr\Http\Message\StreamFactoryInterface;
+use Psr\Http\Message\UploadedFileFactoryInterface;
+use Psr\Http\Message\UriFactoryInterface;
 use Psr\Log\LoggerInterface;
 use Slim\App;
 use Slim\Factory\AppFactory;
@@ -69,6 +76,26 @@ return [
         (require __DIR__ . '/routes.php')($app);
 
         return $app;
+    },
+
+    ResponseFactoryInterface::class => function (Container $container) {
+        return $container->get(Psr17Factory::class);
+    },
+
+    ServerRequestFactoryInterface::class => function (Container $container) {
+        return $container->get(Psr17Factory::class);
+    },
+
+    StreamFactoryInterface::class => function (Container $container) {
+        return $container->get(Psr17Factory::class);
+    },
+
+    UploadedFileFactoryInterface::class => function (Container $container) {
+        return $container->get(Psr17Factory::class);
+    },
+
+    UriFactoryInterface::class => function (Container $container) {
+        return $container->get(Psr17Factory::class);
     },
 
     Application::class => function (Container $container) {
@@ -125,10 +152,6 @@ return [
         return $cli;
     },
 
-    ServerRequestFactoryInterface::class => function (Container $container) {
-        return $container->get(Psr17Factory::class);
-    },
-
     LoggerInterface::class => function () {
         /** @var HandlerInterface[] $handlers */
         $handlers = [];
@@ -157,6 +180,19 @@ return [
         );
 
         return new EntityManager($connection, $config);
+    },
+
+    Filesystem::class => function (Container $container) {
+        $adapter = $container->get(FilesystemAdapter::class);
+
+        return new Filesystem($adapter);
+    },
+
+    FilesystemAdapter::class => function () {
+        $storagePath = __DIR__ . '/../var/';
+        // TODO: return an adapter based on environment variable
+
+        return new LocalFilesystemAdapter($storagePath);
     },
 
 ];
